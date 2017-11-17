@@ -1,38 +1,54 @@
-import java.awt.Canvas;
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.BorderLayout;
 import java.awt.image.BufferStrategy;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
+
+import mips.InstCache;
 
 public class Simulador extends JFrame implements Runnable {
 	public static final String frameTitle = "Simulador MIPS";
 	private MIPS mips;
-	private InstCache instCache;
+	private boolean fimExec;
+	private boolean modoAuto;
 
 	public Simulador() {
 		super(frameTitle);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new GridLayout(1, 2));
 
-		instCache = new InstCache();
+		fimExec = false;
+		modoAuto = false;
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(new BorderLayout());
+		setFocusable(true);
+
 		mips = new MIPS();
 
-		add(instCache);
-		add(mips);
+		add(mips, BorderLayout.CENTER);
 		pack();
+
+		setPreferredSize(new Dimension(mips.getWidth(), mips.getHeight()));
+
+		addKeyListener(new KeyAdapter() {
+			public void KeyPressed(KeyEvent e) {
+				switch(e.getKeyCode()) {
+					
+				}
+			}
+		});
+
 		setVisible(true);
 	}
-	
-	public void tick() {
 
-	}
-
-	public void render() {
-		mips.render();
+	public void render(int tick) {
+		mips.render(tick);
 	}
 
 	public void run() {
+		while(fimExec == false) {
 
+		}
 	}
 }
