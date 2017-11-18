@@ -25,11 +25,14 @@ public class Simulador extends JFrame implements Runnable {
 		setFocusable(true);
 
 		mips = new MIPS();
-
 		add(mips, BorderLayout.CENTER);
 		pack();
+		
+		mips.createBufferStrategy(2);
+		mips.grf = mips.getBufferStrategy().getDrawGraphics();
 
 		setPreferredSize(new Dimension(mips.getWidth(), mips.getHeight()));
+		setResizable(false);
 
 		addKeyListener(new KeyAdapter() {
 			public void KeyPressed(KeyEvent e) {

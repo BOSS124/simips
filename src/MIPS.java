@@ -9,7 +9,7 @@ import mips.Componente;
 
 public class MIPS extends Canvas {
 	private ArrayList<Componente> componentes;
-	private Graphics grf;
+	public Graphics grf;
 
 	public MIPS() {
 		super();
@@ -19,9 +19,6 @@ public class MIPS extends Canvas {
 		setPreferredSize(new Dimension(1000, 720));
 
 		componentes = new ArrayList<Componente>();
-
-		createBufferStrategy(2);
-		grf = getBufferStrategy().getDrawGraphics();
 	}
 
 	public void render(int tick) {
