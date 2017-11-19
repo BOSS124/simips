@@ -17,8 +17,6 @@ public class InstCache extends Componente {
 
 	private String instrucoes[];
 
-	private Font fonteTexto;
-
 	public InstCache(int posx, int posy) {
 		super(posx, posy);
 
@@ -26,8 +24,6 @@ public class InstCache extends Componente {
 		for(int i = 0; i < InstCache.cont; i++) {
 			instrucoes[i] = "NOP";
 		}
-
-		fonteTexto = new Font("SansSerif", Font.BOLD, 12);
 	}
 
 	/*public int traduzir() {
@@ -37,12 +33,11 @@ public class InstCache extends Componente {
 	public void draw(Graphics grf) {
 		grf.setColor(Color.BLACK);
 
-		grf.setFont(fonteTexto);
 		int altura = grf.getFontMetrics().getHeight();
 
 		for(int i = 0; i < InstCache.cont; i++) {
 			grf.drawRect(posx, posy + (i * 20), 100, 20);
-			grf.drawString(instrucoes[i], posx + 5, posy + (i * 20) + ((20 - altura) / 2) + altura);
+			grf.drawString(Integer.toHexString(i * 4).toUpperCase() + " - " + instrucoes[i], posx + 5, posy + (i * 20) + ((20 - altura) / 2) + altura);
 		}
 	}
 

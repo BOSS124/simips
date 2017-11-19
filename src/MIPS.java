@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.Color;
+import java.awt.Font;
 
 
 import mips.Componente;
@@ -10,7 +11,7 @@ import mips.InstCache;
 
 public class MIPS extends Canvas {
 	public Graphics grf;
-
+	public static Font fonteTexto;
 	private InstCache instCache;
 
 	public MIPS() {
@@ -21,7 +22,9 @@ public class MIPS extends Canvas {
 		setSize(dim);
 		setBackground(Color.WHITE);
 
-		instCache = new InstCache(0, 20);
+		fonteTexto = new Font("SansSerif", Font.BOLD, 12);
+
+		instCache = new InstCache(5, 20);
 	}
 
 	public void render() {
@@ -32,6 +35,11 @@ public class MIPS extends Canvas {
 		}
 
 		Graphics grf = bs.getDrawGraphics();
+		grf.setFont(MIPS.fonteTexto);
+
+		String modoOp = (Simulador.modoAuto) ? "MODO: Automático" : "MODO: Manual";
+
+		grf.drawString(modoOp, 1, grf.getFontMetrics().getHeight() + 1);
 		instCache.draw(grf);
 
 		grf.dispose();

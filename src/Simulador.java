@@ -18,7 +18,7 @@ public class Simulador extends JFrame implements Runnable {
 
 	private MIPS mips;
 	private boolean fimExec;
-	private boolean modoAuto;
+	public static boolean modoAuto;
 
 	public Simulador() {
 		super(frameTitle);
