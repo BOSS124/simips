@@ -1,15 +1,18 @@
 package mips;
 
-import java.awt.Graphics;
-
-public class Registrador extends Componente {
+public class Registrador {
 	private String nome;
 	private int valor;
+	private int codigo;
 
-	public Registrador(String nome, int posx, int posy) {
-		super(posx, posy);
+	public Registrador(String nome, int codigo) {
 		this.nome = nome;
+		this.codigo = codigo;
 		this.valor = 0;
+	}
+
+	public String getNome() {
+		return nome;
 	}
 
 	public int getValor() {
@@ -20,7 +23,7 @@ public class Registrador extends Componente {
 		this.valor = valor;
 	}
 
-	public void draw(Graphics grf, int tick) {
-
+	public int getCodigo() {
+		return codigo;
 	}
 }

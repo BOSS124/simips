@@ -28,5 +28,7 @@ public class MIPS extends Canvas {
 				c.draw(grf, tick);
 			}
 		}
+
+		if()
 	}
 }

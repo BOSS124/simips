@@ -10,6 +10,10 @@ import mips.InstCache;
 
 public class Simulador extends JFrame implements Runnable {
 	public static final String frameTitle = "Simulador MIPS";
+
+	public static boolean info_registradores = false;
+	public static boolean info_memoria = false;
+
 	private MIPS mips;
 	private boolean fimExec;
 	private boolean modoAuto;
@@ -37,7 +41,25 @@ public class Simulador extends JFrame implements Runnable {
 		addKeyListener(new KeyAdapter() {
 			public void KeyPressed(KeyEvent e) {
 				switch(e.getKeyCode()) {
-					
+					case VK_R:
+					Simulador.info_registradores = true;
+					break;
+
+					case VK_M:
+					Simulador.info_memoria = true;
+					break;
+				}
+			}
+
+			public void KeyReleased(KeyEvent e) {
+				switch(e.getKeyCode()) {
+					case VK_R:
+					Simulador.info_registradores = false;
+					break;
+
+					case VK_M:
+					Simulador.info_memoria = false;
+					break;
 				}
 			}
 		});

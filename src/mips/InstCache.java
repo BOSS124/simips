@@ -47,12 +47,22 @@ public class InstCache extends Componente {
 	}
 
 	private boolean instrucaoValida(String instrucao) {
-		return true;
+		String aritimeticos = "(?i)(add|sub|and|or)\\s*?\\$(s[0-7]|t[0-9]),\\s*?\\$(s[0-7]|t[0-9]|zero),\\s*?\\$(s[0-7]|t[0-9]|zero)";
+		String loadStore = "(?i)(lw|sw)\\s*?\\$(s[0-7]|t[0-9]),\\s*?([0-9a-fA-F]{1,2}+)\\(\\$(s[0-7]|t[0-9]|zero)\\)";
+		String bne = "(?i)bne\\s*?\\$(s[0-7]|t[0-9]|zero),\\s*?\\$(s[0-7]|t[0-9]|zero),\\s*?([0-9a-fA-F]{1,2}+)";
+
+		if(Pattern.matches(aritimeticos, instrucao)) return true;
+
+		else if(Pattern.matches(loadStore, instrucao)) return true;
+
+		else if(Pattern.matches(bne, instrucao)) return true;
+
+		else return false;
 	}
 
 	public void setInstruction(int index, String instrucao) {
 		if(index >= 0 && index < InstCache.cont && instrucaoValida(instrucao)) {
-			instrucoes[index] = Integer.toString(index * 4) + instrucao;
+			instrucoes[index] = instrucao;
 		}
 	}
 }
