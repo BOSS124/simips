@@ -34,15 +34,15 @@ public class InstCache extends Componente {
 
 	}*/
 
-	public void draw(Graphics grf, int tick) {
+	public void draw(Graphics grf) {
 		grf.setColor(Color.BLACK);
-		grf.drawRect(posx, posy, 35, InstCache.cont * 20);
 
 		grf.setFont(fonteTexto);
 		int altura = grf.getFontMetrics().getHeight();
 
 		for(int i = 0; i < InstCache.cont; i++) {
-			grf.drawString(instrucoes[i], 5, ((((i + 1) * 20) + (i * 20)) / 2) - (altura / 2));
+			grf.drawRect(posx, posy + (i * 20), 100, 20);
+			grf.drawString(instrucoes[i], posx + 5, posy + (i * 20) + ((20 - altura) / 2) + altura);
 		}
 	}
 

@@ -2,33 +2,39 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.awt.Color;
 
-import java.util.ArrayList;
 
 import mips.Componente;
+import mips.InstCache;
 
 public class MIPS extends Canvas {
-	private ArrayList<Componente> componentes;
 	public Graphics grf;
 
+	private InstCache instCache;
+
 	public MIPS() {
-		super();
+		Dimension dim = new Dimension(1000, 700);
+		setMinimumSize(dim);
+		setMaximumSize(dim);
+		setPreferredSize(dim);
+		setSize(dim);
+		setBackground(Color.WHITE);
 
-		setMinimumSize(new Dimension(1000, 720));
-		setMaximumSize(new Dimension(1000, 720));
-		setPreferredSize(new Dimension(1000, 720));
-
-		componentes = new ArrayList<Componente>();
+		instCache = new InstCache(0, 20);
 	}
 
-	public void render(int tick) {
-		if(grf == null) return;
-		for(Componente c : componentes) {
-			if(c != null) {
-				c.draw(grf, tick);
-			}
+	public void render() {
+		BufferStrategy bs = getBufferStrategy();
+		if(bs == null) {
+			createBufferStrategy(2);
+			return;
 		}
 
-		if()
+		Graphics grf = bs.getDrawGraphics();
+		instCache.draw(grf);
+
+		grf.dispose();
+		bs.show();
 	}
 }

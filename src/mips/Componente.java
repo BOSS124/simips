@@ -13,5 +13,5 @@ public abstract class Componente {
 		this.ativo = false;
 	}
 
-	public abstract void draw(Graphics grf, int tick);
+	public abstract void draw(Graphics grf);
 }

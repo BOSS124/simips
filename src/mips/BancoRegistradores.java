@@ -1,11 +1,13 @@
 package mips;
 
 import java.util.ArrayList;
+import java.awt.Graphics;
 
 public class BancoRegistradores extends Componente {
 	private ArrayList<Registrador> registradores;
 
-	public BancoRegistradores() {
+	public BancoRegistradores(int posx, int posy) {
+		super(posx, posy);
 		registradores = new ArrayList<Registrador>();
 
 		registradores.add(new Registrador("zero", 0));
@@ -69,5 +71,9 @@ public class BancoRegistradores extends Componente {
 				break;
 			}
 		}
+	}
+
+	public void draw(Graphics grf) {
+
 	}
 }
