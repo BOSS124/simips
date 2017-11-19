@@ -5,7 +5,6 @@ import java.awt.Graphics;
 public abstract class Componente {
 	protected int posx;
 	protected int posy;
-	protected boolean ativo;
 
 	public Componente(int posx, int posy) {
 		this.posx = posx;
@@ -14,4 +13,20 @@ public abstract class Componente {
 	}
 
 	public abstract void draw(Graphics grf);
+
+	public void setPosX(int posx) {
+		this.posx = posx;
+	}
+
+	public void setPosY(int posy) {
+		this.posy = posy;
+	}
+
+	public void moveX(int stepSize) {
+		this.posx += stepSize;
+	}
+
+	public void moveY(int stepSize) {
+		this.posy += stepSize;
+	}
 }

@@ -14,7 +14,7 @@ public class Simulador extends JFrame implements Runnable {
 	public static boolean info_registradores = false;
 	public static boolean info_memoria = false;
 
-	public static final int maxFPS = 100;
+	public static final int maxFPS = 60;
 
 	private MIPS mips;
 	private boolean fimExec;
@@ -31,14 +31,7 @@ public class Simulador extends JFrame implements Runnable {
 		setFocusable(true);
 
 		mips = new MIPS();
-		add(mips, BorderLayout.CENTER);
-		pack();
-
-		setPreferredSize(new Dimension(mips.getWidth(), mips.getHeight()));
-		setResizable(false);
-		setLocationRelativeTo(null);
-
-		addKeyListener(new KeyAdapter() {
+		mips.addKeyListener(new KeyAdapter() {
 			public void KeyPressed(KeyEvent e) {
 				switch(e.getKeyCode()) {
 					case KeyEvent.VK_R:
@@ -47,6 +40,10 @@ public class Simulador extends JFrame implements Runnable {
 
 					case KeyEvent.VK_M:
 					Simulador.info_memoria = true;
+					break;
+
+					case KeyEvent.VK_SPACE:
+					Simulador.modoAuto = !Simulador.modoAuto;
 					break;
 				}
 			}
@@ -63,6 +60,12 @@ public class Simulador extends JFrame implements Runnable {
 				}
 			}
 		});
+		add(mips, BorderLayout.CENTER);
+		pack();
+
+		setPreferredSize(new Dimension(mips.getWidth(), mips.getHeight()));
+		setResizable(false);
+		setLocationRelativeTo(null);
 
 		setVisible(true);
 	}

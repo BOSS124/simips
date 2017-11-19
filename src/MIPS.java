@@ -13,6 +13,7 @@ public class MIPS extends Canvas {
 	public Graphics grf;
 	public static Font fonteTexto;
 	private InstCache instCache;
+	private int num;
 
 	public MIPS() {
 		Dimension dim = new Dimension(1000, 700);
@@ -25,6 +26,7 @@ public class MIPS extends Canvas {
 		fonteTexto = new Font("SansSerif", Font.BOLD, 12);
 
 		instCache = new InstCache(5, 20);
+		num = 0;
 	}
 
 	public void render() {
@@ -39,6 +41,8 @@ public class MIPS extends Canvas {
 
 		String modoOp = (Simulador.modoAuto) ? "MODO: Automático" : "MODO: Manual";
 
+		grf.clearRect(0, 0, getWidth(), getHeight());
+		
 		grf.drawString(modoOp, 1, grf.getFontMetrics().getHeight() + 1);
 		instCache.draw(grf);
 
