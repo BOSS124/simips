@@ -55,6 +55,14 @@ public class BancoRegistradores extends Componente {
 		return null;
 	}
 
+	public Registrador getRegistrador(String nome) {
+		for(Registrador r : registradores) {
+			if(r.getNome().equalsIgnoreCase(nome))
+				return r;
+		}
+		return null;
+	}
+
 	public void setValorReg(int codigo, int valor) {
 		if(codigo == 0) return;
 		for(Registrador r : registradores) {

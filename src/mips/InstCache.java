@@ -36,7 +36,7 @@ public class InstCache extends Componente {
 
 	public int traduzir(int index) {
 		int inst = 0;
-		int op, rs, rt, rd, shamt, funct, imm;
+		int op = 0, rs = 0, rt = 0, rd = 0, shamt = 0, funct = 0, imm = 0;
 		Pattern p;
 		Matcher m;
 
@@ -66,9 +66,9 @@ public class InstCache extends Componente {
 				funct = 0x25;
 			}
 
-			rd = banco.getRegister(m.group(2)).getCodigo();
-			rs = banco.getRegister(m.group(3)).getCodigo();
-			rt = banco.getRegister(m.group(4)).getCodigo();
+			rd = banco.getRegistrador(m.group(2)).getCodigo();
+			rs = banco.getRegistrador(m.group(3)).getCodigo();
+			rt = banco.getRegistrador(m.group(4)).getCodigo();
 
 			inst |= op << 31;
 			inst |= rs << 25;
@@ -92,8 +92,8 @@ public class InstCache extends Componente {
 				op = 0x2B;
 			}
 
-			rt = banco.getRegister(m.group(4)).getCodigo();
-			rs = banco.getRegister(m.group(2)).getCodigo();
+			rt = banco.getRegistrador(m.group(4)).getCodigo();
+			rs = banco.getRegistrador(m.group(2)).getCodigo();
 			imm = Integer.parseInt(m.group(3), 10);
 
 			inst |= op << 31;
@@ -109,8 +109,8 @@ public class InstCache extends Componente {
 
 		if(m.matches()) {
 			op = 0x05;
-			rs = banco.getRegister(m.group(1)).getCodigo();
-			rt = banco.getRegister(m.group(2)).getCodigo();
+			rs = banco.getRegistrador(m.group(1)).getCodigo();
+			rt = banco.getRegistrador(m.group(2)).getCodigo();
 			imm = Integer.parseInt(m.group(3), 10);
 
 			inst |= op << 31;

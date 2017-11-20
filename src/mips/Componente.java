@@ -9,7 +9,6 @@ public abstract class Componente {
 	public Componente(int posx, int posy) {
 		this.posx = posx;
 		this.posy = posy;
-		this.ativo = false;
 	}
 
 	public abstract void draw(Graphics grf);
