@@ -56,6 +56,7 @@ public class BancoRegistradores extends Componente {
 	}
 
 	public void setValorReg(int codigo, int valor) {
+		if(codigo == 0) return;
 		for(Registrador r : registradores) {
 			if(r.getCodigo() == codigo) {
 				r.setValor(valor);
@@ -65,6 +66,7 @@ public class BancoRegistradores extends Componente {
 	}
 
 	public void setValorReg(String nome, int valor) {
+		if(nome.equals("zero")) return;
 		for(Registrador r : registradores) {
 			if(r.getNome().equals(nome)) {
 				r.setValor(valor);
@@ -72,6 +74,8 @@ public class BancoRegistradores extends Componente {
 			}
 		}
 	}
+
+
 
 	public void draw(Graphics grf) {
 
