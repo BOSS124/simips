@@ -6,14 +6,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
 
-import mips.Componente;
-import mips.InstCache;
-import mips.CaminhoDados;
-import mips.BancoRegistradores;
+import mips.*;
 
 public class MIPS extends Canvas {
 	public Graphics grf;
 	public static Font fonteTexto;
+
+	private ProgramCounter pc;
 	private InstCache instCache;
 	private BancoRegistradores bregs;
 	private CaminhoDados d1;
@@ -28,6 +27,7 @@ public class MIPS extends Canvas {
 
 		fonteTexto = new Font("SansSerif", Font.BOLD, 12);
 
+		pc = new ProgramCounter(150, 320);
 		bregs = new BancoRegistradores(500, 500);
 		instCache = new InstCache(5, 20, bregs);
 
@@ -52,8 +52,9 @@ public class MIPS extends Canvas {
 		grf.clearRect(0, 0, getWidth(), getHeight());
 		
 		grf.drawString(modoOp, 1, grf.getFontMetrics().getHeight() + 1);
+		pc.draw(grf);
 		instCache.draw(grf);
-		d1.draw(grf);
+		bregs.draw(grf);
 
 		grf.dispose();
 		bs.show();

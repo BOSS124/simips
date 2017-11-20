@@ -86,6 +86,10 @@ public class BancoRegistradores extends Componente {
 
 
 	public void draw(Graphics grf) {
+		int altura = grf.getFontMetrics().getHeight();
+		int largura = grf.getFontMetrics().stringWidth("Registradores");
 
+		grf.drawRect(posx, posy, largura + 30, largura + 30);
+		grf.drawString("Registradores", posx + 15, posy + ((largura + 30) / 2) + (altura / 2));
 	}
 }

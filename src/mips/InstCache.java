@@ -156,7 +156,7 @@ public class InstCache extends Componente {
 		}
 	}
 
-	private boolean instrucaoValida(String instrucao) {
+	public static boolean instrucaoValida(String instrucao) {
 		if(Pattern.matches(InstCache.aritimeticos, instrucao)) return true;
 
 		else if(Pattern.matches(InstCache.loadStore, instrucao)) return true;
@@ -169,7 +169,7 @@ public class InstCache extends Componente {
 	}
 
 	public void setInstruction(int index, String instrucao) {
-		if(index >= 0 && index < InstCache.cont && instrucaoValida(instrucao)) {
+		if(index >= 0 && index < InstCache.cont && InstCache.instrucaoValida(instrucao)) {
 			instrucoes[index] = instrucao;
 		}
 	}
