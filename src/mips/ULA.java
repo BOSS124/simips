@@ -38,12 +38,12 @@ public class ULA extends Componente {
 			case 1:
 			resultado = input1 | input2;
 			break;
-
-			if(resultado == 0)
+		}
+		
+		if(resultado == 0)
 				zero = 1;
 			else
 				zero = 0;
-		}
 	}
 
 	public int getResultado() {
