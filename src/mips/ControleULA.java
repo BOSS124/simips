@@ -23,7 +23,7 @@ public class ControleULA extends Componente {
 			return 6;
 		}
 
-		return 0;
+		return -1;
 	}
 
 	public void draw(Graphics grf) {
