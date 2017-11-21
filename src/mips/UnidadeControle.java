@@ -34,6 +34,10 @@ public class UnidadeControle extends Componente {
 	}
 
 	public void draw(Graphics grf) {
+		int altura = grf.getFontMetrics().getHeight();
+		int largura = grf.getFontMetrics().stringWidth("Un. Controle");
 
+		grf.drawOval(posx, posy, largura + 6, (int) ((largura + 6) * 1.5));
+		grf.drawString("Un. Controle", posx + 3, posy + (int) (((largura + 6) * 1.5) / 2) + (altura / 2));
 	}
 }
