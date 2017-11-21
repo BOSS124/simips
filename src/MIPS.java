@@ -30,11 +30,6 @@ public class MIPS extends Canvas {
 		pc = new ProgramCounter(150, 320);
 		bregs = new BancoRegistradores(500, 500);
 		instCache = new InstCache(5, 20, bregs);
-
-		d1 = new CaminhoDados();
-		d1.novoPonto(new Point(150, 200));
-		d1.novoPonto(new Point(200, 200));
-		d1.novoPonto(new Point(200, 300));
 	}
 
 	public void render() {
