@@ -5,6 +5,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
+import java.util.ArrayList;
 
 import mips.*;
 
@@ -17,6 +18,9 @@ public class MIPS extends Canvas {
 	private BancoRegistradores bregs;
 	private CaminhoDados d1;
 
+	private ArrayList<Componente> componentes;
+	private ArrayList<CaminhoDados> caminhos;
+
 	public MIPS() {
 		Dimension dim = new Dimension(1000, 700);
 		setMinimumSize(dim);
@@ -28,8 +32,13 @@ public class MIPS extends Canvas {
 		fonteTexto = new Font("SansSerif", Font.BOLD, 12);
 
 		pc = new ProgramCounter(150, 320);
-		bregs = new BancoRegistradores(500, 500);
 		instCache = new InstCache(5, 20, bregs);
+
+		componentes = new ArrayList<Componente>();
+		caminhos = new ArrayList<CaminhoDados>();
+
+		componentes.add(pc);
+		componentes.add(instCache);
 	}
 
 	public void render() {
@@ -47,9 +56,13 @@ public class MIPS extends Canvas {
 		grf.clearRect(0, 0, getWidth(), getHeight());
 		
 		grf.drawString(modoOp, 1, grf.getFontMetrics().getHeight() + 1);
-		pc.draw(grf);
-		instCache.draw(grf);
-		bregs.draw(grf);
+
+		for(Componente c : componentes) {
+			c.draw(grf);
+		}
+		for(CaminhoDados cd : caminhos) {
+			cd.draw(grf);
+		}
 
 		grf.dispose();
 		bs.show();
