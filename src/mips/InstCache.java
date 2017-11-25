@@ -146,14 +146,11 @@ public class InstCache extends Componente {
 	}
 
 	public void draw(Graphics grf) {
-		grf.setColor(Color.BLACK);
-
 		int altura = grf.getFontMetrics().getHeight();
+		int largura = grf.getFontMetrics().stringWidth("Mem. Instruções");
 
-		for(int i = 0; i < InstCache.cont; i++) {
-			grf.drawRect(posx, posy + (i * 20), 100, 20);
-			grf.drawString(Integer.toHexString(i * 4).toUpperCase() + " - " + instrucoes[i], posx + 5, posy + (i * 20) + ((20 - altura) / 2) + altura);
-		}
+		grf.drawRect(posx, posy, largura + 10, largura + 10);
+		grf.drawString("Mem. Instruções", posx + 5, posy + ((largura + 10) / 2) + altura);
 	}
 
 	public static boolean instrucaoValida(String instrucao) {
@@ -175,11 +172,11 @@ public class InstCache extends Componente {
 	}
 
 	public String getInstrucoes() {
-		String temp = "";
+		String temp = new String();
 
 		for(int i = 0; i < InstCache.cont; i++) {
-			temp.concat(instrucoes[i]);
-			if(i < (InstCache.cont - 1)) temp.concat("\n");
+			temp = temp.concat(instrucoes[i]);
+			if(i < (InstCache.cont - 1)) temp = temp.concat("\n");
 		}
 
 		return temp;

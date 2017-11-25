@@ -49,7 +49,6 @@ public class ProgramInput extends JFrame implements ActionListener {
 		requestFocus();
 	}
 
-
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == salvarBtn) {
 			String[] instrucoes = textArea.getText().split("\n");
@@ -63,6 +62,6 @@ public class ProgramInput extends JFrame implements ActionListener {
 			}
 
 		}
-		hide();
+		setVisible(false);
 	}
 }

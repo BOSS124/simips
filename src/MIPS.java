@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import mips.*;
 
@@ -30,8 +31,8 @@ public class MIPS extends Canvas {
 
 	public static boolean modoAuto;
 
-	private boolean espaco;
-	private boolean p;
+	private boolean modoTroca;
+	private boolean entradaPrograma;
 
 	public MIPS() {
 		Dimension dim = new Dimension(1000, 700);
@@ -42,15 +43,20 @@ public class MIPS extends Canvas {
 		setFocusable(true);
 		setBackground(Color.WHITE);
 
-		fonteTexto = new Font("SansSerif", Font.BOLD, 12);
+		fonteTexto = new Font("SansSerif", Font.BOLD, 10);
 
 		modoAuto = false;
 
-		espaco = false;
-		p = false;
+		modoTroca = false;
+		entradaPrograma = false;
 
 		instCache = new InstCache(5, 20, bregs);
-		pi = new ProgramInput(instCache);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				pi = new ProgramInput(instCache);
+			}
+		});
+		
 		pc = new ProgramCounter(150, 320);
 		
 
@@ -64,35 +70,29 @@ public class MIPS extends Canvas {
 			public void keyPressed(KeyEvent e) {
 				switch(e.getKeyCode()) {
 					case KeyEvent.VK_SPACE:
-					espaco = true;
+					modoTroca = true;
 					break;
 
 					case KeyEvent.VK_P:
-					p = true;
+					entradaPrograma = true;
 					break;
 				}
-			}
-
-			public void keyReleased(KeyEvent e) {
-				switch(e.getKeyCode()) {
-					case KeyEvent.VK_SPACE:
-					espaco = false;
-					break;
-
-					case KeyEvent.VK_P:
-					p = false;
-					break;
-				}
-
 			}
 		});
 	}
 
 	public void tick() {
-		modoAuto = (espaco == true) ? true : false;
+		if(modoTroca == true) {
+			modoAuto = !modoAuto;
+			modoTroca = false;
+		}
 
-		if(p && !pi.isShowing())
-			pi.mostrar();
+		if(entradaPrograma == true) {
+			if(!pi.isShowing()) {
+				pi.mostrar();
+			}
+			entradaPrograma = false;
+		}
 	}
 
 	public void render() {
@@ -103,6 +103,7 @@ public class MIPS extends Canvas {
 		}
 
 		Graphics grf = bs.getDrawGraphics();
+		grf.setColor(Color.BLACK);
 		grf.setFont(MIPS.fonteTexto);
 
 		String modoOp = (MIPS.modoAuto) ? "MODO: Automático" : "MODO: Manual";
