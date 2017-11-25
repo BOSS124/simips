@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 public class InstCache extends Componente {
-	private static final int cont = 32;
+	public static final int cont = 32;
 	private static final int bytesInst = 4;
 
 	private BancoRegistradores banco;
@@ -168,9 +168,20 @@ public class InstCache extends Componente {
 		else return false;
 	}
 
-	public void setInstruction(int index, String instrucao) {
+	public void setInstrucao(int index, String instrucao) {
 		if(index >= 0 && index < InstCache.cont && InstCache.instrucaoValida(instrucao)) {
 			instrucoes[index] = instrucao;
 		}
+	}
+
+	public String getInstrucoes() {
+		String temp = "";
+
+		for(int i = 0; i < InstCache.cont; i++) {
+			temp.concat(instrucoes[i]);
+			if(i < (InstCache.cont - 1)) temp.concat("\n");
+		}
+
+		return temp;
 	}
 }

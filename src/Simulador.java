@@ -1,10 +1,10 @@
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.image.BufferStrategy;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+
 
 import javax.swing.JFrame;
+
 
 import mips.InstCache;
 
@@ -18,48 +18,17 @@ public class Simulador extends JFrame implements Runnable {
 
 	private MIPS mips;
 	private boolean fimExec;
-	public static boolean modoAuto;
 
 	public Simulador() {
 		super(frameTitle);
 
 		fimExec = false;
-		modoAuto = false;
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		setFocusable(true);
 
 		mips = new MIPS();
-		mips.addKeyListener(new KeyAdapter() {
-			public void KeyPressed(KeyEvent e) {
-				switch(e.getKeyCode()) {
-					case KeyEvent.VK_R:
-					Simulador.info_registradores = true;
-					break;
-
-					case KeyEvent.VK_M:
-					Simulador.info_memoria = true;
-					break;
-
-					case KeyEvent.VK_SPACE:
-					Simulador.modoAuto = !Simulador.modoAuto;
-					break;
-				}
-			}
-
-			public void KeyReleased(KeyEvent e) {
-				switch(e.getKeyCode()) {
-					case KeyEvent.VK_R:
-					Simulador.info_registradores = false;
-					break;
-
-					case KeyEvent.VK_M:
-					Simulador.info_memoria = false;
-					break;
-				}
-			}
-		});
 		add(mips, BorderLayout.CENTER);
 		pack();
 
@@ -68,10 +37,8 @@ public class Simulador extends JFrame implements Runnable {
 		setLocationRelativeTo(null);
 
 		setVisible(true);
-	}
 
-	public void render() {
-		mips.render();
+		mips.requestFocus();
 	}
 
 	public void run() {
@@ -80,7 +47,8 @@ public class Simulador extends JFrame implements Runnable {
 
 		while(fimExec == false) {
 			if((System.currentTimeMillis() - lastRender) >= msFrame) {
-				render();
+				mips.render();
+				mips.tick();
 				lastRender = System.currentTimeMillis();
 			}
 		}
