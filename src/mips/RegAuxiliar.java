@@ -29,7 +29,7 @@ public class RegAuxiliar extends Componente {
 		int altura = grf.getFontMetrics().getHeight();
 		int larguraValor = grf.getFontMetrics().stringWidth(valorStr);
 		int larguraNome = grf.getFontMetrics().stringWidth(nome);
-		int largura = (larguraValor >= larguraNome) ? larguraValor : larguraNome;
+		int largura = 56;
 
 		grf.drawRect(posx, posy, largura + 6, 2 * altura + 10);
 		grf.drawString(nome, posx + 3, posy + altura + 5);

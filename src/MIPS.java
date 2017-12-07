@@ -47,10 +47,13 @@ public class MIPS extends Canvas {
 	private Multiplexador mux3;
 	private RegAuxiliar regaux13;
 	private RegAuxiliar regaux14;
+	private BNE bne;
+	private MemoriaDados memoria;
 	private RegAuxiliar regaux15;
 	private RegAuxiliar regaux16;
 	private RegAuxiliar regaux17;
 	private RegAuxiliar regaux18;
+	private Multiplexador mux4;
 
 	private ArrayList<Componente> componentes;
 	private ArrayList<CaminhoDados> caminhos;
@@ -76,15 +79,28 @@ public class MIPS extends Canvas {
 		modoTroca = false;
 		entradaPrograma = false;
 
+		caminhos = new ArrayList<CaminhoDados>();
+
+		for(int i = 0; i < 20; i++)
+			caminhos.add(new CaminhoDados());
 		/* Adicionando componentes do simulador --------------------------------------*/
 
 		bregs = new BancoRegistradores(360, 313);
+		caminhos.get(0).novoPonto(new Point(471, 340));
+		caminhos.get(0).novoPonto(new Point(500, 340));
+		caminhos.get(1).novoPonto(new Point(471, 390));
+		caminhos.get(1).novoPonto(new Point(500, 390));
+
 		instCache = new InstCache(130, 313, bregs);
+		caminhos.get(2).novoPonto(new Point(233, 373));
+		caminhos.get(2).novoPonto(new Point(270, 373));
+
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				pi = new ProgramInput(instCache);
 			}
 		});
+
 		
 		mux1 = new Multiplexador(18, 320, 2) {
 			public int getSaida(int seletor) {
@@ -98,8 +114,16 @@ public class MIPS extends Canvas {
 				}
 			}
 		};
+		caminhos.get(3).novoPonto(new Point(48, 368));
+		caminhos.get(3).novoPonto(new Point(70, 368));
 
 		pc = new ProgramCounter(70, 320);
+		caminhos.get(4).novoPonto(new Point(94, 368));
+		caminhos.get(4).novoPonto(new Point(130, 368));
+		caminhos.get(5).novoPonto(new Point(112, 368));
+		caminhos.get(5).novoPonto(new Point(112, 220));
+		caminhos.get(5).novoPonto(new Point(150, 220));
+
 		somador1 = new Somador(150, 200);
 		regaux1 = new RegAuxiliar(270, 180, "PC+4");
 		regaux2 = new RegAuxiliar(270, 353, "Inst");
@@ -145,14 +169,30 @@ public class MIPS extends Canvas {
 
 		regaux9 = new RegAuxiliar(710, 90, "Ctrl2");
 		regaux10 = new RegAuxiliar(710, 240, "PC+Salto");
-		regaux11 = new RegAuxiliar(710, 330, "Zero");
-		regaux12 = new RegAuxiliar(710, 380, "ULAOut");
+		regaux11 = new RegAuxiliar(710, 315, "Zero");
+		regaux12 = new RegAuxiliar(710, 365, "ULAOut");
 		regaux13 = new RegAuxiliar(710, 430, "Read2");
-		regaux14 = new RegAuxiliar(710, 472, "DestReg");
-
+		regaux14 = new RegAuxiliar(710, 580, "DestReg");
+		bne = new BNE(800, 290);
+		memoria = new MemoriaDados(800, 330);
+		regaux15 = new RegAuxiliar(950, 105, "Ctrl3");
+		regaux16 = new RegAuxiliar(950, 360, "MemRd");
+		regaux17 = new RegAuxiliar(950, 420, "ULAOut2");
+		regaux18 = new RegAuxiliar(950, 500, "DestReg2");
+		mux4 = new Multiplexador(1050, 350, 2) {
+			public int getSaida(int seletor) {
+				switch(seletor) {
+					case 0:
+						return entradas[0];
+					case 1:
+						return entradas[1];
+					default:
+						return 0;
+				}
+			}
+		};
 
 		componentes = new ArrayList<Componente>();
-		caminhos = new ArrayList<CaminhoDados>();
 
 		componentes.add(bregs);
 		componentes.add(pc);
@@ -181,6 +221,15 @@ public class MIPS extends Canvas {
 		componentes.add(regaux12);
 		componentes.add(regaux13);
 		componentes.add(regaux14);
+		componentes.add(bne);
+		componentes.add(memoria);
+		componentes.add(regaux15);
+		componentes.add(regaux16);
+		componentes.add(regaux17);
+		componentes.add(regaux18);
+		componentes.add(mux4);
+
+		
 
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {

@@ -37,6 +37,11 @@ public class MemoriaDados extends Componente {
 	}
 
 	public void draw(Graphics grf) {
+		int altura = grf.getFontMetrics().getHeight();
+		int largura = grf.getFontMetrics().stringWidth("Memória Dados");
+
+		grf.drawRect(posx, posy, largura + 30, largura + 30);
+		grf.drawString("Memória Dados", posx + 15, posy + ((largura + 30) / 2) + (altura / 2));
 
 	}
 }
