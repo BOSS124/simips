@@ -53,6 +53,7 @@ public class MIPS extends Canvas {
 	private RegAuxiliar regaux16;
 	private RegAuxiliar regaux17;
 	private RegAuxiliar regaux18;
+	private RegAuxiliar regaux19;
 	private Multiplexador mux4;
 
 	private ArrayList<Componente> componentes;
@@ -81,7 +82,7 @@ public class MIPS extends Canvas {
 
 		caminhos = new ArrayList<CaminhoDados>();
 
-		for(int i = 0; i < 20; i++)
+		for(int i = 0; i < 40; i++)
 			caminhos.add(new CaminhoDados());
 		/* Adicionando componentes do simulador --------------------------------------*/
 
@@ -120,26 +121,123 @@ public class MIPS extends Canvas {
 		pc = new ProgramCounter(70, 320);
 		caminhos.get(4).novoPonto(new Point(94, 368));
 		caminhos.get(4).novoPonto(new Point(130, 368));
+
 		caminhos.get(5).novoPonto(new Point(112, 368));
 		caminhos.get(5).novoPonto(new Point(112, 220));
 		caminhos.get(5).novoPonto(new Point(150, 220));
 
-		somador1 = new Somador(150, 200);
-		regaux1 = new RegAuxiliar(270, 180, "PC+4");
-		regaux2 = new RegAuxiliar(270, 353, "Inst");
-		uncontrole = new UnidadeControle(360, 50);
-		regaux3 = new RegAuxiliar(500, 75, "Ctrl");
-		regaux4 = new RegAuxiliar(500, 320, "Read1");
-		regaux5 = new RegAuxiliar(500, 370, "Read2");
-		signextend = new ExtensorSinal(380, 500);
-		regaux6 = new RegAuxiliar(500, 520, "Ins[15-0]");
-		regaux7 = new RegAuxiliar(500, 570, "Ins[20-16]");
-		regaux8 = new RegAuxiliar(500, 620, "Ins[15-11]");
-		shiftleft2 = new ShiftLeft2(580, 230);
-		somador2 = new Somador(640, 200);
-		ula = new ULA(620, 310);
+		caminhos.get(6).novoPonto(new Point(130, 280));
+		caminhos.get(6).novoPonto(new Point(150, 280));
 
-		mux2 = new Multiplexador(568, 360, 2) {
+
+		somador1 = new Somador(150, 200);
+		caminhos.get(7).novoPonto(new Point(200, 250));
+		caminhos.get(7).novoPonto(new Point(270, 250));
+		caminhos.get(8).novoPonto(new Point(210, 250));
+		caminhos.get(8).novoPonto(new Point(210, 180));
+		caminhos.get(8).novoPonto(new Point(12, 180));
+		caminhos.get(8).novoPonto(new Point(12, 333));
+		caminhos.get(8).novoPonto(new Point(20, 333));
+
+		regaux1 = new RegAuxiliar(270, 230, "PC+4");
+		caminhos.get(9).novoPonto(new Point(332, 250));
+		caminhos.get(9).novoPonto(new Point(500, 250));
+
+		regaux2 = new RegAuxiliar(270, 353, "Inst");
+		caminhos.get(10).novoPonto(new Point(332, 373));
+		caminhos.get(10).novoPonto(new Point(347, 373));
+		caminhos.get(10).novoPonto(new Point(347, 106));
+		caminhos.get(10).novoPonto(new Point(360, 106));
+		caminhos.get(11).novoPonto(new Point(347, 323));
+		caminhos.get(11).novoPonto(new Point(360, 323));
+		caminhos.get(12).novoPonto(new Point(347, 343));
+		caminhos.get(12).novoPonto(new Point(360, 343));
+		caminhos.get(13).novoPonto(new Point(347, 373));
+		caminhos.get(13).novoPonto(new Point(347, 537));
+		caminhos.get(13).novoPonto(new Point(380, 537));
+		caminhos.get(14).novoPonto(new Point(347, 537));
+		caminhos.get(14).novoPonto(new Point(347, 590));
+		caminhos.get(14).novoPonto(new Point(500, 590));
+		caminhos.get(15).novoPonto(new Point(347, 537));
+		caminhos.get(15).novoPonto(new Point(347, 640));
+		caminhos.get(15).novoPonto(new Point(500, 640));
+
+		uncontrole = new UnidadeControle(360, 50);
+		caminhos.get(16).novoPonto(new Point(435, 95));
+		caminhos.get(16).novoPonto(new Point(500, 95));
+
+		regaux3 = new RegAuxiliar(500, 75, "Ctrl");
+		caminhos.get(17).novoPonto(new Point(562, 95));
+		caminhos.get(17).novoPonto(new Point(690, 95));
+		caminhos.get(17).novoPonto(new Point(690, 110));
+		caminhos.get(17).novoPonto(new Point(710, 110));
+		caminhos.get(18).novoPonto(new Point(697, 110));
+		caminhos.get(18).novoPonto(new Point(697, 660));
+		caminhos.get(18).novoPonto(new Point(595, 660));
+		caminhos.get(18).novoPonto(new Point(595, 650));
+		caminhos.get(19).novoPonto(new Point(697, 570));
+		caminhos.get(19).novoPonto(new Point(640, 570));
+		caminhos.get(19).novoPonto(new Point(640, 561));
+		caminhos.get(20).novoPonto(new Point(697, 460));
+		caminhos.get(20).novoPonto(new Point(588, 460));
+		caminhos.get(20).novoPonto(new Point(588, 450));
+
+		regaux19 = new RegAuxiliar(500, 230, "PC+4");
+		caminhos.get(21).novoPonto(new Point(562, 250));
+		caminhos.get(21).novoPonto(new Point(572, 250));
+		caminhos.get(21).novoPonto(new Point(572, 210));
+		caminhos.get(21).novoPonto(new Point(625, 210));
+		caminhos.get(21).novoPonto(new Point(625, 225));
+		caminhos.get(21).novoPonto(new Point(640, 225));
+
+		regaux4 = new RegAuxiliar(500, 320, "Read1");
+		caminhos.get(22).novoPonto(new Point(562, 340));
+		caminhos.get(22).novoPonto(new Point(620, 340));
+
+		regaux5 = new RegAuxiliar(500, 370, "Read2");
+		caminhos.get(23).novoPonto(new Point(562, 390));
+		caminhos.get(23).novoPonto(new Point(575, 390));
+		caminhos.get(24).novoPonto(new Point(531, 407));
+		caminhos.get(24).novoPonto(new Point(531, 455));
+		caminhos.get(24).novoPonto(new Point(710, 455));
+
+		signextend = new ExtensorSinal(380, 500);
+		caminhos.get(25).novoPonto(new Point(426, 540));
+		caminhos.get(25).novoPonto(new Point(500, 540));
+
+		regaux6 = new RegAuxiliar(500, 520, "Ins[15-0]");
+		caminhos.get(26).novoPonto(new Point(562, 540));
+		caminhos.get(26).novoPonto(new Point(605, 540));
+		caminhos.get(27).novoPonto(new Point(565, 540));
+		caminhos.get(27).novoPonto(new Point(565, 270));
+		caminhos.get(27).novoPonto(new Point(580, 270));
+		caminhos.get(28).novoPonto(new Point(565, 425));
+		caminhos.get(28).novoPonto(new Point(575, 425));
+
+		regaux7 = new RegAuxiliar(500, 570, "Ins[20-16]");
+		caminhos.get(29).novoPonto(new Point(562, 590));
+		caminhos.get(29).novoPonto(new Point(580, 590));
+
+		regaux8 = new RegAuxiliar(500, 620, "Ins[15-11]");
+		caminhos.get(30).novoPonto(new Point(562, 640));
+		caminhos.get(30).novoPonto(new Point(584, 640));
+
+		shiftleft2 = new ShiftLeft2(580, 230);
+		caminhos.get(31).novoPonto(new Point(615, 280));
+		caminhos.get(31).novoPonto(new Point(640, 280));
+
+		somador2 = new Somador(640, 200);
+		caminhos.get(32).novoPonto(new Point(690, 260));
+		caminhos.get(32).novoPonto(new Point(710, 260));
+
+		ula = new ULA(620, 310);
+		caminhos.get(33).novoPonto(new Point(670, 335));
+		caminhos.get(33).novoPonto(new Point(710, 335));
+
+		caminhos.get(34).novoPonto(new Point(670, 385));
+		caminhos.get(34).novoPonto(new Point(710, 385));
+
+		mux2 = new Multiplexador(575, 360, 2) {
 			public int getSaida(int seletor) {
 				switch(seletor) {
 					case 0:
@@ -169,7 +267,7 @@ public class MIPS extends Canvas {
 
 		regaux9 = new RegAuxiliar(710, 90, "Ctrl2");
 		regaux10 = new RegAuxiliar(710, 240, "PC+Salto");
-		regaux11 = new RegAuxiliar(710, 315, "Zero");
+		regaux11 = new RegAuxiliar(710, 320, "Zero");
 		regaux12 = new RegAuxiliar(710, 365, "ULAOut");
 		regaux13 = new RegAuxiliar(710, 430, "Read2");
 		regaux14 = new RegAuxiliar(710, 580, "DestReg");
@@ -228,6 +326,7 @@ public class MIPS extends Canvas {
 		componentes.add(regaux17);
 		componentes.add(regaux18);
 		componentes.add(mux4);
+		componentes.add(regaux19);
 
 		
 
