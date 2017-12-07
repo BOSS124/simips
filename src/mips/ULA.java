@@ -63,15 +63,15 @@ public class ULA extends Componente {
 		int largura = grf.getFontMetrics().stringWidth("ULA");
 
 		px[0] = posx; py[0] = posy;
-		px[1] = posx + 16 + largura; py[1] = posy + 13;
-		px[2] = px[1]; py[2] = py[1] + 26;
-		px[3] = px[0]; py[3] = py[0] + 52;
-		px[4] = px[3]; py[4] = py[3] + 21;
-		px[5] = px[4] + 10; py[5] = py[4] + 5;
-		px[6] = px[4]; py[6] = py[5] + 5;
+		px[1] = posx + 50; py[1] = posy + 25;
+		px[2] = px[1]; py[2] = py[1] + 50;
+		px[3] = posx; py[3] = posy + 100;
+		px[4] = posx; py[4] = posy + 60;
+		px[5] = posx + 10; py[5] = posy + 50;
+		px[6] = posx; py[6] = posy + 40;
 
 		grf.drawPolygon(px, py, npts);
 
-		grf.drawString("ULA", posx + 13, posy + 26 + altura);
+		grf.drawString("ULA", posx + 13, posy + 50 + (altura / 2));
 	}
 }

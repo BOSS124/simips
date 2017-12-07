@@ -150,7 +150,7 @@ public class InstCache extends Componente {
 		int largura = grf.getFontMetrics().stringWidth("Mem. Instruções");
 
 		grf.drawRect(posx, posy, largura + 10, largura + 10);
-		grf.drawString("Mem. Instruções", posx + 5, posy + ((largura + 10) / 2) + altura);
+		grf.drawString("Mem. Instruções", posx + 5, posy + ((largura + 10) / 2) + (altura / 2));
 	}
 
 	public static boolean instrucaoValida(String instrucao) {

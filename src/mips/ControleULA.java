@@ -30,7 +30,7 @@ public class ControleULA extends Componente {
 		int altura = grf.getFontMetrics().getHeight();
 		int largura = grf.getFontMetrics().stringWidth("Controle ULA");
 
-		grf.drawOval(posx, posy, largura + 6, (int) ((largura + 6) * 1.5));
-		grf.drawString("Controle ULA", posx + 3, posy + (int) (((largura + 6) * 1.5) / 2) + (altura / 2));
+		grf.drawOval(posx, posy, largura + 6, (int) ((largura + 6) * 1.2));
+		grf.drawString("Controle ULA", posx + 3, posy + (int) (((largura + 6) * 1.2) / 2) + (altura / 2));
 	}
 }
