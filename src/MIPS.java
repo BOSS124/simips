@@ -82,7 +82,8 @@ public class MIPS extends Canvas {
 
 		caminhos = new ArrayList<CaminhoDados>();
 
-		for(int i = 0; i < 100; i++)
+		componentes = new ArrayList<Componente>();
+		for(int i = 0; i < 56; i++)
 			caminhos.add(new CaminhoDados());
 		/* Adicionando componentes do simulador --------------------------------------*/
 
@@ -91,10 +92,16 @@ public class MIPS extends Canvas {
 		caminhos.get(0).novoPonto(new Point(500, 340));
 		caminhos.get(1).novoPonto(new Point(471, 390));
 		caminhos.get(1).novoPonto(new Point(500, 390));
+		componentes.add(new Texto(361, 314, "RdReg1"));
+		componentes.add(new Texto(361, 333, "RdReg2"));
+		componentes.add(new Texto(361, 380, "WrReg"));
+		componentes.add(new Texto(361, 400, "WrData"));
+		componentes.add(new Texto(410, 285, "RegWrite"));
 
 		instCache = new InstCache(130, 313, bregs);
 		caminhos.get(2).novoPonto(new Point(233, 373));
 		caminhos.get(2).novoPonto(new Point(270, 373));
+
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -117,6 +124,7 @@ public class MIPS extends Canvas {
 		};
 		caminhos.get(3).novoPonto(new Point(48, 368));
 		caminhos.get(3).novoPonto(new Point(70, 368));
+		componentes.add(new Texto(250, 40, "PCSrc"));
 
 		pc = new ProgramCounter(70, 320);
 		caminhos.get(4).novoPonto(new Point(94, 368));
@@ -138,6 +146,7 @@ public class MIPS extends Canvas {
 		caminhos.get(8).novoPonto(new Point(12, 180));
 		caminhos.get(8).novoPonto(new Point(12, 333));
 		caminhos.get(8).novoPonto(new Point(20, 333));
+		componentes.add(new Texto(120, 270, "4"));
 
 		regaux1 = new RegAuxiliar(270, 230, "PC+4");
 		caminhos.get(9).novoPonto(new Point(332, 250));
@@ -350,8 +359,8 @@ public class MIPS extends Canvas {
 		regaux18 = new RegAuxiliar(950, 580, "DestReg2");
 		caminhos.get(54).novoPonto(new Point(1012, 600));
 		caminhos.get(54).novoPonto(new Point(1037, 600));
-		caminhos.get(54).novoPonto(new Point(1037, 660));
-		caminhos.get(54).novoPonto(new Point(340, 660));
+		caminhos.get(54).novoPonto(new Point(1037, 675));
+		caminhos.get(54).novoPonto(new Point(340, 675));
 		caminhos.get(54).novoPonto(new Point(340, 390));
 		caminhos.get(54).novoPonto(new Point(360, 390));
 
@@ -374,7 +383,6 @@ public class MIPS extends Canvas {
 		caminhos.get(55).novoPonto(new Point(355, 410));
 		caminhos.get(55).novoPonto(new Point(360, 410));
 
-		componentes = new ArrayList<Componente>();
 
 		componentes.add(bregs);
 		componentes.add(pc);
