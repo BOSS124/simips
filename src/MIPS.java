@@ -25,6 +25,9 @@ public class MIPS extends Canvas {
 	private Somador somador1;
 	private BancoRegistradores bregs;
 	private CaminhoDados d1;
+	private RegAuxiliar regaux1;
+	private RegAuxiliar regaux2;
+	private UnidadeControle uncontrole;
 
 	private ArrayList<Componente> componentes;
 	private ArrayList<CaminhoDados> caminhos;
@@ -50,21 +53,33 @@ public class MIPS extends Canvas {
 		modoTroca = false;
 		entradaPrograma = false;
 
-		instCache = new InstCache(5, 20, bregs);
+		/* Adicionando componentes do simulador --------------------------------------*/
+
+		bregs = new BancoRegistradores(360, 313);
+		instCache = new InstCache(130, 313, bregs);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				pi = new ProgramInput(instCache);
 			}
 		});
 		
-		pc = new ProgramCounter(150, 320);
+		pc = new ProgramCounter(70, 320);
+		somador1 = new Somador(150, 200);
+		regaux1 = new RegAuxiliar(270, 180, "PC+4");
+		regaux2 = new RegAuxiliar(270, 353, "Inst");
+		uncontrole = new UnidadeControle(360, 50);
 		
 
 		componentes = new ArrayList<Componente>();
 		caminhos = new ArrayList<CaminhoDados>();
 
+		componentes.add(bregs);
 		componentes.add(pc);
 		componentes.add(instCache);
+		componentes.add(somador1);
+		componentes.add(regaux1);
+		componentes.add(regaux2);
+		componentes.add(uncontrole);
 
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {

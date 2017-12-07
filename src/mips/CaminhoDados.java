@@ -6,8 +6,10 @@ import java.util.ArrayList;
 
 public class CaminhoDados {
 	private ArrayList<Point> pontos;
+	private String nome;
 
-	public CaminhoDados() {
+	public CaminhoDados(String nome) {
+		this.nome = nome;
 		pontos = new ArrayList<Point>();
 	}
 
