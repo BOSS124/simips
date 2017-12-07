@@ -82,7 +82,7 @@ public class MIPS extends Canvas {
 
 		caminhos = new ArrayList<CaminhoDados>();
 
-		for(int i = 0; i < 40; i++)
+		for(int i = 0; i < 100; i++)
 			caminhos.add(new CaminhoDados());
 		/* Adicionando componentes do simulador --------------------------------------*/
 
@@ -249,8 +249,12 @@ public class MIPS extends Canvas {
 				}
 			}
 		};
+		caminhos.get(35).novoPonto(new Point(604, 390));
+		caminhos.get(35).novoPonto(new Point(620, 390));
 
 		controleula = new ControleULA(600, 465);
+		caminhos.get(36).novoPonto(new Point(640, 465));
+		caminhos.get(36).novoPonto(new Point(640, 400));
 
 		mux3 = new Multiplexador(580, 560, 2) {
 			public int getSaida(int seletor) {
@@ -264,19 +268,93 @@ public class MIPS extends Canvas {
 				}
 			}
 		};
+		caminhos.get(37).novoPonto(new Point(610, 600));
+		caminhos.get(37).novoPonto(new Point(710, 600));
 
 		regaux9 = new RegAuxiliar(710, 90, "Ctrl2");
+		caminhos.get(38).novoPonto(new Point(772, 110));
+		caminhos.get(38).novoPonto(new Point(930, 110));
+		caminhos.get(38).novoPonto(new Point(930, 125));
+		caminhos.get(38).novoPonto(new Point(950, 125));
+		caminhos.get(39).novoPonto(new Point(930, 125));
+		caminhos.get(39).novoPonto(new Point(930, 490));
+		caminhos.get(39).novoPonto(new Point(865, 490));
+		caminhos.get(39).novoPonto(new Point(865, 447));
+		caminhos.get(40).novoPonto(new Point(865, 110));
+		caminhos.get(40).novoPonto(new Point(865, 330));
+		caminhos.get(41).novoPonto(new Point(813, 110));
+		caminhos.get(41).novoPonto(new Point(813, 290));
+
+
 		regaux10 = new RegAuxiliar(710, 240, "PC+Salto");
+		caminhos.get(42).novoPonto(new Point(772, 260));
+		caminhos.get(42).novoPonto(new Point(787, 260));
+		caminhos.get(42).novoPonto(new Point(787, 30));
+		caminhos.get(42).novoPonto(new Point(5, 30));
+		caminhos.get(42).novoPonto(new Point(5, 390));
+		caminhos.get(42).novoPonto(new Point(20, 390));
+
 		regaux11 = new RegAuxiliar(710, 320, "Zero");
+		caminhos.get(43).novoPonto(new Point(741, 320));
+		caminhos.get(43).novoPonto(new Point(741, 300));
+		caminhos.get(43).novoPonto(new Point(800, 300));
+
 		regaux12 = new RegAuxiliar(710, 365, "ULAOut");
+		caminhos.get(44).novoPonto(new Point(772, 385));
+		caminhos.get(44).novoPonto(new Point(800, 385));
+		caminhos.get(45).novoPonto(new Point(786, 385));
+		caminhos.get(45).novoPonto(new Point(786, 480));
+		caminhos.get(45).novoPonto(new Point(950, 480));
+
 		regaux13 = new RegAuxiliar(710, 430, "Read2");
+		caminhos.get(46).novoPonto(new Point(772, 435));
+		caminhos.get(46).novoPonto(new Point(800, 435));
+
 		regaux14 = new RegAuxiliar(710, 580, "DestReg");
+		caminhos.get(47).novoPonto(new Point(772, 600));
+		caminhos.get(47).novoPonto(new Point(950, 600));
+
 		bne = new BNE(800, 290);
+		caminhos.get(48).novoPonto(new Point(825, 300));
+		caminhos.get(48).novoPonto(new Point(840, 300));
+		caminhos.get(48).novoPonto(new Point(840, 40));
+		caminhos.get(48).novoPonto(new Point(32, 40));
+		caminhos.get(48).novoPonto(new Point(32, 320));
+
 		memoria = new MemoriaDados(800, 330);
+		caminhos.get(49).novoPonto(new Point(918, 380));
+		caminhos.get(49).novoPonto(new Point(950, 380));
+
 		regaux15 = new RegAuxiliar(950, 105, "Ctrl3");
+		caminhos.get(50).novoPonto(new Point(1012, 125));
+		caminhos.get(50).novoPonto(new Point(1032, 125));
+		caminhos.get(50).novoPonto(new Point(1032, 50));
+		caminhos.get(50).novoPonto(new Point(470, 50));
+		caminhos.get(50).novoPonto(new Point(470, 300));
+		caminhos.get(50).novoPonto(new Point(415, 300));
+		caminhos.get(50).novoPonto(new Point(415, 313));
+		caminhos.get(51).novoPonto(new Point(1012, 125));
+		caminhos.get(51).novoPonto(new Point(1064, 125));
+		caminhos.get(51).novoPonto(new Point(1064, 350));
+
 		regaux16 = new RegAuxiliar(950, 360, "MemRd");
-		regaux17 = new RegAuxiliar(950, 420, "ULAOut2");
-		regaux18 = new RegAuxiliar(950, 500, "DestReg2");
+		caminhos.get(52).novoPonto(new Point(1012, 380));
+		caminhos.get(52).novoPonto(new Point(1050, 380));
+
+		regaux17 = new RegAuxiliar(950, 460, "ULAOut2");
+		caminhos.get(53).novoPonto(new Point(1012, 480));
+		caminhos.get(53).novoPonto(new Point(1030, 480));
+		caminhos.get(53).novoPonto(new Point(1030, 430));
+		caminhos.get(53).novoPonto(new Point(1055, 430));
+
+		regaux18 = new RegAuxiliar(950, 580, "DestReg2");
+		caminhos.get(54).novoPonto(new Point(1012, 600));
+		caminhos.get(54).novoPonto(new Point(1037, 600));
+		caminhos.get(54).novoPonto(new Point(1037, 660));
+		caminhos.get(54).novoPonto(new Point(340, 660));
+		caminhos.get(54).novoPonto(new Point(340, 390));
+		caminhos.get(54).novoPonto(new Point(360, 390));
+
 		mux4 = new Multiplexador(1050, 350, 2) {
 			public int getSaida(int seletor) {
 				switch(seletor) {
@@ -289,6 +367,12 @@ public class MIPS extends Canvas {
 				}
 			}
 		};
+		caminhos.get(55).novoPonto(new Point(1080, 395));
+		caminhos.get(55).novoPonto(new Point(1100, 395));
+		caminhos.get(55).novoPonto(new Point(1100, 690));
+		caminhos.get(55).novoPonto(new Point(355, 690));
+		caminhos.get(55).novoPonto(new Point(355, 410));
+		caminhos.get(55).novoPonto(new Point(360, 410));
 
 		componentes = new ArrayList<Componente>();
 
