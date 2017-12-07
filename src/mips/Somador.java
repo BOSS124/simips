@@ -19,10 +19,16 @@ public class Somador extends Componente {
 		int altura = grf.getFontMetrics().getHeight();
 		int largura = grf.getFontMetrics().stringWidth("Add");
 
-		px[0] = 
+		px[0] = posx; py[0] = posy;
+		px[1] = posx + 50; py[1] = posy + 25;
+		px[2] = px[1]; py[2] = py[1] + 50;
+		px[3] = posx; py[3] = posy + 100;
+		px[4] = posx; py[4] = posy + 60;
+		px[5] = posx + 10; py[5] = posy + 50;
+		px[6] = posx; py[6] = posy + 40;
 
 		grf.drawPolygon(px, py, npts);
 
-		grf.drawString("Add", posx + 13, posy + 26 + altura);
+		grf.drawString("Add", posx + 13, posy + 42 + altura);
 	}
 }

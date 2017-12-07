@@ -19,6 +19,10 @@ public class RegAuxiliar extends Componente {
 		return valor;
 	}
 
+	public String getNome() {
+		return nome;
+	}
+
 	public void draw(Graphics grf) {
 		String valorStr = String.format("%1$8X", valor);
 

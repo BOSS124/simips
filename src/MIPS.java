@@ -27,7 +27,11 @@ public class MIPS extends Canvas {
 	private CaminhoDados d1;
 	private RegAuxiliar regaux1;
 	private RegAuxiliar regaux2;
+	private RegAuxiliar regaux3;
+	private RegAuxiliar regaux4;
+	private RegAuxiliar regaux5;
 	private UnidadeControle uncontrole;
+	private ExtensorSinal signextend;
 
 	private ArrayList<Componente> componentes;
 	private ArrayList<CaminhoDados> caminhos;
@@ -38,7 +42,7 @@ public class MIPS extends Canvas {
 	private boolean entradaPrograma;
 
 	public MIPS() {
-		Dimension dim = new Dimension(1000, 700);
+		Dimension dim = new Dimension(1300, 700);
 		setMinimumSize(dim);
 		setMaximumSize(dim);
 		setPreferredSize(dim);
@@ -68,7 +72,10 @@ public class MIPS extends Canvas {
 		regaux1 = new RegAuxiliar(270, 180, "PC+4");
 		regaux2 = new RegAuxiliar(270, 353, "Inst");
 		uncontrole = new UnidadeControle(360, 50);
-		
+		regaux3 = new RegAuxiliar(500, 65, "Ctrl");
+		regaux4 = new RegAuxiliar(500, 320, "Read1");
+		regaux5 = new RegAuxiliar(500, 370, "Read2");
+		signextend = new ExtensorSinal(380, 500);
 
 		componentes = new ArrayList<Componente>();
 		caminhos = new ArrayList<CaminhoDados>();
@@ -80,6 +87,11 @@ public class MIPS extends Canvas {
 		componentes.add(regaux1);
 		componentes.add(regaux2);
 		componentes.add(uncontrole);
+		componentes.add(regaux3);
+		componentes.add(regaux4);
+		componentes.add(regaux5);
+		componentes.add(signextend);
+
 
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
@@ -130,6 +142,7 @@ public class MIPS extends Canvas {
 		for(Componente c : componentes) {
 			c.draw(grf);
 		}
+		
 		for(CaminhoDados cd : caminhos) {
 			cd.draw(grf);
 		}
