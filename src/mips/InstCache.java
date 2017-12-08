@@ -19,7 +19,7 @@ public class InstCache extends Componente {
 	private String instrucoes[];
 
 	private static final String aritimeticos = "(?i)(add|sub|and|or)\\s*?\\$(s[0-7]|t[0-9]),\\s*?\\$(s[0-7]|t[0-9]|zero),\\s*?\\$(s[0-7]|t[0-9]|zero)";
-	private static final String loadStore = "(?i)(lw|sw)\\s*?\\$(s[0-7]|t[0-9]),\\s*?(\\d+)\\(\\$(s[0-7]|t[0-9]|zero)\\)";
+	private static final String loadStore = "(?i)(lw|sw)\\s*?\\$(s[0-7]|t[0-9]|zero),\\s*?(\\d+)\\(\\$(s[0-7]|t[0-9]|zero)\\)";
 	private static final String bne = "(?i)bne\\s*?\\$(s[0-7]|t[0-9]|zero),\\s*?\\$(s[0-7]|t[0-9]|zero),\\s*?(\\d+)";
 	private static final String nop = "(?i)nop";
 
@@ -92,8 +92,8 @@ public class InstCache extends Componente {
 				op = 0x2B;
 			}
 
-			rt = banco.getRegistrador(m.group(4)).getCodigo();
-			rs = banco.getRegistrador(m.group(2)).getCodigo();
+			rs = banco.getRegistrador(m.group(4)).getCodigo();
+			rt = banco.getRegistrador(m.group(2)).getCodigo();
 			imm = Integer.parseInt(m.group(3), 10);
 
 			inst |= op << 26;

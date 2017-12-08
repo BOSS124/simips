@@ -17,16 +17,16 @@ public class UnidadeControle extends Componente {
 	public int getSaida() {
 		int temp = 0;
 
-		if(inst >> 26 == 0) {	//R-format(op == 0)
+		if(((inst >> 26) & 63) == 0) {	//R-format(op == 0)
 			temp = 0x182;
 		}
-		else if(inst >> 26 == 0x23) {	//lw
+		else if(((inst >> 26) & 63) == 0x23) {	//lw
 			temp = 0x2B;
 		}
-		else if(inst >> 26 == 0x2B) {	//sw
+		else if(((inst >> 26) & 63) == 0x2B) {	//sw
 			temp = 0x24;
 		}
-		else if(inst >> 26 == 0x05) {	//bne
+		else if(((inst >> 26) & 63) == 0x05) {	//bne
 			temp = 0x50;
 		}
 

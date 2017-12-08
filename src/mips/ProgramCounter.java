@@ -23,6 +23,7 @@ public class ProgramCounter extends Componente {
 		int largura = grf.getFontMetrics().stringWidth("PC");
 
 		grf.drawRect(posx, posy, largura + 10, 90);
-		grf.drawString("PC", posx + 5, posy + 45 + (altura / 2));
+		grf.drawString("PC", posx + 5, posy + 45);
+		grf.drawString(Integer.toHexString(valor), posx + 5, posy + 45 + altura + 3);
 	}
 }

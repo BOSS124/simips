@@ -271,10 +271,12 @@ public class MIPS extends Canvas {
 		};
 		caminhos.get(35).novoPonto(new Point(604, 390));
 		caminhos.get(35).novoPonto(new Point(620, 390));
+		componentes.add(new Texto(575, 457, "ALUSrc"));
 
 		controleula = new ControleULA(600, 465);
 		caminhos.get(36).novoPonto(new Point(640, 465));
 		caminhos.get(36).novoPonto(new Point(640, 400));
+		componentes.add(new Texto(645, 555, "ALUOp"));
 
 		mux3 = new Multiplexador(580, 560, 2) {
 			public int getSaida() {
@@ -290,6 +292,7 @@ public class MIPS extends Canvas {
 		};
 		caminhos.get(37).novoPonto(new Point(610, 600));
 		caminhos.get(37).novoPonto(new Point(710, 600));
+		componentes.add(new Texto(620, 640, "RegDst"));
 
 		regaux9 = new RegAuxiliar(710, 90, "Ctrl(2)");
 		caminhos.get(38).novoPonto(new Point(772, 110));
@@ -326,7 +329,7 @@ public class MIPS extends Canvas {
 		caminhos.get(45).novoPonto(new Point(786, 480));
 		caminhos.get(45).novoPonto(new Point(950, 480));
 
-		regaux13 = new RegAuxiliar(710, 430, "Read2");
+		regaux13 = new RegAuxiliar(710, 430, "Read2(2)");
 		caminhos.get(46).novoPonto(new Point(772, 435));
 		caminhos.get(46).novoPonto(new Point(800, 435));
 
@@ -344,6 +347,8 @@ public class MIPS extends Canvas {
 		memoria = new MemoriaDados(800, 330);
 		caminhos.get(49).novoPonto(new Point(918, 380));
 		caminhos.get(49).novoPonto(new Point(950, 380));
+		componentes.add(new Texto(845, 487, "MemRead"));
+		componentes.add(new Texto(850, 310, "MemWrite"));
 
 		regaux15 = new RegAuxiliar(950, 105, "Ctrl(3)");
 		caminhos.get(50).novoPonto(new Point(1012, 125));
@@ -393,7 +398,7 @@ public class MIPS extends Canvas {
 		caminhos.get(55).novoPonto(new Point(355, 690));
 		caminhos.get(55).novoPonto(new Point(355, 410));
 		caminhos.get(55).novoPonto(new Point(360, 410));
-
+		componentes.add(new Texto(1068, 320, "MemToReg"));
 
 		componentes.add(bregs);
 		componentes.add(pc);
@@ -600,6 +605,7 @@ public class MIPS extends Canvas {
 		
 		grf.clearRect(0, 0, getWidth(), getHeight());
 		grf.drawString(modoOp, 1, grf.getFontMetrics().getHeight() + 1);
+		grf.drawString("PRESS \'H\' FOR HELP", 200, altura + 1);
 
 		for(Componente c : componentes) {
 			c.draw(grf);
@@ -740,7 +746,23 @@ public class MIPS extends Canvas {
 			grf.drawString("Tecla \'P\': Alterar Instruções do Programa", 5, y);
 			y += altura + 5;
 
+			grf.drawString("Tecla \'R\': Mostra os valores dos registradores do Banco de Registradores", 5, y);
+			y += altura + 5;
 
+			grf.drawString("Tecla \'C\': Avança um ciclo de CLOCK se estiver no modo Manual", 5, y);
+			y += altura + 5;
+
+			grf.drawString("Tecla \'H\': HELP", 5, y);
+			y += altura + 5;
+
+			grf.drawString("Tecla \'M\': Mostra os valores da memória com alinhamento 4", 5, y);
+			y += altura + 5;
+
+			grf.drawString("Tecla \'S\': Alterar manualmente um endereço de memória", 5, y);
+			y += altura + 5;
+
+			grf.drawString("Tecla \'A\': Alterar manualmente o valor de um registrador", 5, y);
+			y += altura + 5;
 
 			grf.drawString("Referência: Computer Organization and Design, 4th Ed, D. A. Patterson and J. L. Hennessy", 5, y);
 

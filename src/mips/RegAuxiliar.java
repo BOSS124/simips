@@ -33,6 +33,6 @@ public class RegAuxiliar extends Componente {
 
 		grf.drawRect(posx, posy, largura + 6, 2 * altura + 10);
 		grf.drawString(nome, posx + 3, posy + altura + 5);
-		grf.drawString(valorStr, posx + 3, posy + 2 * altura);
+		grf.drawString(valorStr.toUpperCase(), posx + 3, posy + 2 * altura + 3);
 	}
 }
