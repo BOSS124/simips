@@ -17,6 +17,6 @@ public class ShiftLeft2 extends Componente {
 	}
 
 	public static int getSaida(int entrada) {
-		return entrada << 2;
+		return entrada * 4;
 	}
 }

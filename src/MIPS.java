@@ -63,9 +63,10 @@ public class MIPS extends Canvas {
 
 	private boolean modoTroca;
 	private boolean entradaPrograma;
+	private boolean reginfos;
 
 	public MIPS() {
-		Dimension dim = new Dimension(1300, 700);
+		Dimension dim = new Dimension(1150, 700);
 		setMinimumSize(dim);
 		setMaximumSize(dim);
 		setPreferredSize(dim);
@@ -79,6 +80,7 @@ public class MIPS extends Canvas {
 
 		modoTroca = false;
 		entradaPrograma = false;
+		reginfos = false;
 
 		caminhos = new ArrayList<CaminhoDados>();
 
@@ -111,7 +113,7 @@ public class MIPS extends Canvas {
 
 		
 		mux1 = new Multiplexador(18, 320, 2) {
-			public int getSaida(int seletor) {
+			public int getSaida() {
 				switch(seletor) {
 					case 0:
 						return entradas[0];
@@ -247,7 +249,7 @@ public class MIPS extends Canvas {
 		caminhos.get(34).novoPonto(new Point(710, 385));
 
 		mux2 = new Multiplexador(575, 360, 2) {
-			public int getSaida(int seletor) {
+			public int getSaida() {
 				switch(seletor) {
 					case 0:
 						return entradas[0];
@@ -266,7 +268,7 @@ public class MIPS extends Canvas {
 		caminhos.get(36).novoPonto(new Point(640, 400));
 
 		mux3 = new Multiplexador(580, 560, 2) {
-			public int getSaida(int seletor) {
+			public int getSaida() {
 				switch(seletor) {
 					case 0:
 						return entradas[0];
@@ -365,7 +367,7 @@ public class MIPS extends Canvas {
 		caminhos.get(54).novoPonto(new Point(360, 390));
 
 		mux4 = new Multiplexador(1050, 350, 2) {
-			public int getSaida(int seletor) {
+			public int getSaida() {
 				switch(seletor) {
 					case 0:
 						return entradas[0];
@@ -426,15 +428,99 @@ public class MIPS extends Canvas {
 			public void keyPressed(KeyEvent e) {
 				switch(e.getKeyCode()) {
 					case KeyEvent.VK_SPACE:
-					modoTroca = true;
-					break;
+						modoTroca = true;
+						break;
 
 					case KeyEvent.VK_P:
-					entradaPrograma = true;
-					break;
+						entradaPrograma = true;
+						break;
+
+					case KeyEvent.VK_R:
+						reginfos = !reginfos;
+						break;
+
+					case KeyEvent.VK_C:
+						clock();
+						break;
 				}
 			}
 		});
+	}
+
+	public void clock() {
+		/* Começa pelo Write Back */
+		mux4.setEntrada(1, regaux16.getValor());
+		mux4.setEntrada(0, regaux17.getValor());
+		mux4.setSeletor(regaux15.getValor() & 1);
+		bregs.setValorReg(regaux18.getValor(), mux4.getSaida());
+		/* Fim do Write Back */
+
+		/* Etapa Memory Access */
+		regaux15.setValor(regaux9.getValor() & 3); //Ctrl3 = Ctrl2 & 3
+		regaux17.setValor(regaux12.getValor()); //ULAOut2 = ULAOut
+		regaux18.setValor(regaux14.getValor()); //DestReg2 = DestReg
+
+		if(((regaux9.getValor() >> 3) & 1) == 1) { //MemRead = 1
+			regaux16.setValor(memoria.getMemEndValor(regaux12.getValor()));
+		}
+
+		if(((regaux9.getValor() >> 2) & 1) == 1) { //MemWrite = 1
+			memoria.setMemEndValor(regaux12.getValor(), regaux13.getValor());
+		}
+
+		mux1.setSeletor(bne.getSaida(regaux11.getValor(), (regaux9.getValor() >> 4) & 1));
+		mux1.setEntrada(1, regaux10.getValor());
+
+		/* Fim do Memory Access */
+
+		/* Etapa Execute-Address Calculation */
+		regaux9.setValor(regaux3.getValor() & 31); //Ctrl2 = Ctrl & 31
+		regaux13.setValor(regaux5.getValor()); //Segundo Read2 = Primeiro Read2
+		regaux10.setValor(Somador.getSoma(regaux19.getValor(), ShiftLeft2.getSaida(regaux6.getValor()))); //PC+Salto = PC+4 + offset*4
+		mux2.setEntrada(0, regaux5.getValor());
+		mux2.setEntrada(1, regaux6.getValor());
+		mux2.setSeletor((regaux3.getValor() >> 5) & 1);
+
+		ula.setInputs(regaux4.getValor(), mux2.getSaida());
+		ula.setOperacao(ControleULA.getULAControle(regaux6.getValor(), (regaux3.getValor() >> 6) & 1));
+		ula.operate();
+
+		regaux11.setValor(ula.getZeroFlag()); //Zero = ula zero flag
+		regaux12.setValor(ula.getResultado()); //ULAOut = resultado ula
+
+		mux3.setEntrada(0, regaux7.getValor());
+		mux3.setEntrada(1, regaux8.getValor());
+		mux3.setSeletor((regaux3.getValor() >> 8) & 1);
+		regaux14.setValor(mux3.getSaida()); //atualiza DestReg
+
+		/* Fim Execute */
+
+		/* Etapa Instruction Decode */
+		uncontrole.setInst(regaux2.getValor());
+		regaux3.setValor(uncontrole.getSaida()); //Ctrl = saida Unidade de Control
+
+		regaux19.setValor(regaux1.getValor()); //Segundo PC+4 = Primeiro PC+4
+		regaux4.setValor(bregs.getRegistrador((regaux2.getValor() >> 21) & 31).getValor()); //Read1
+		regaux5.setValor(bregs.getRegistrador((regaux2.getValor() >> 16) & 31).getValor()); //Read2
+
+		regaux6.setValor(regaux2.getValor() & 0xFFFF); //Ins[15-0]
+		regaux7.setValor((regaux2.getValor() >> 16) & 31); //Ins[20-16]
+		regaux8.setValor((regaux2.getValor() >> 11) & 31); //Ins[15-11]
+
+		/* Fim Instruction Decode */
+
+		/* Etapa Instruction Fetch */
+		int index = pc.getValor() / 4;
+		if(index >= InstCache.cont) {
+			index = 0;
+			pc.setValor(0);
+		}
+
+		regaux2.setValor(instCache.traduzir(index)); //Inst
+		mux1.setEntrada(0, Somador.getSoma(pc.getValor(), 4));
+		regaux1.setValor(Somador.getSoma(pc.getValor(), 4));
+		pc.setValor(mux1.getSaida()); //pc = pc + 4 || branch
+		/* Fim Instruction Fetch */
 	}
 
 	public void tick() {
@@ -464,8 +550,9 @@ public class MIPS extends Canvas {
 
 		String modoOp = (MIPS.modoAuto) ? "MODO: Automático" : "MODO: Manual";
 
-		grf.clearRect(0, 0, getWidth(), getHeight());
+		int altura = grf.getFontMetrics().getHeight();
 		
+		grf.clearRect(0, 0, getWidth(), getHeight());
 		grf.drawString(modoOp, 1, grf.getFontMetrics().getHeight() + 1);
 
 		for(Componente c : componentes) {
@@ -474,6 +561,112 @@ public class MIPS extends Canvas {
 
 		for(CaminhoDados cd : caminhos) {
 			cd.draw(grf);
+		}
+
+		if(reginfos) {
+			int y = altura;
+
+			grf.clearRect(0, 0, getWidth(), getHeight());
+
+
+			grf.drawString("NOME", 5, y);
+			grf.drawString("CÓDIGO", 55, y);
+			grf.drawString("VALOR", 125, y);
+			y += altura + 5;
+
+			grf.drawString("t0", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t0").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t0").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("t1", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t1").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t1").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("t2", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t2").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t2").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("t3", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t3").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t3").getValor()), 125, y);
+			y += altura + 5;
+			
+			grf.drawString("t4", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t4").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t4").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("t5", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t5").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t5").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("t6", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t6").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t6").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("t7", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t7").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t7").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("t8", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t8").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t8").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("t9", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t9").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("t9").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("s0", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("s0").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("s0").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("s1", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("s1").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("s1").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("s2", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("s2").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("s2").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("s3", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("s3").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("s3").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("s4", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("s4").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("s4").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("s5", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("s5").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("s5").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("s6", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("s6").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("s6").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("s7", 5, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("s7").getCodigo()), 55, y);
+			grf.drawString(Integer.toString(bregs.getRegistrador("s7").getValor()), 125, y);
+			y += altura + 5;
+
+			grf.drawString("PC", 5, y);
+			grf.drawString("?", 55, y);
+			grf.drawString(Integer.toString(pc.getValor()), 125, y);
 		}
 
 		grf.dispose();

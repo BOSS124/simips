@@ -7,8 +7,8 @@ public class BNE extends Componente {
 		super(posx, posy);
 	}
 
-	public static int getSaida(int a, int b) {
-		return a & b;
+	public static int getSaida(int zero, int bne) {
+		return (zero == 0 && bne == 1) ? 1 : 0;
 	}
 
 	public void draw(Graphics grf) {

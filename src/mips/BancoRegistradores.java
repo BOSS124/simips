@@ -83,6 +83,15 @@ public class BancoRegistradores extends Componente {
 		}
 	}
 
+	public int getRegCodigo(String nome) {
+		if(registradorExiste(nome)) {
+			for(Registrador r : registradores) {
+				if(r.getNome().equals(nome))
+					return r.getCodigo();
+			}
+		}
+		return -1;
+	}
 
 
 	public void draw(Graphics grf) {
