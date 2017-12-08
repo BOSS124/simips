@@ -4,7 +4,7 @@ import java.awt.Graphics;
 
 public class MemoriaDados extends Componente {
 	private char memoria[];
-	public static final int CAPACIDADE = 1000;
+	public static final int CAPACIDADE = 152;
 
 	public MemoriaDados(int posx, int posy) {
 		super(posx, posy);

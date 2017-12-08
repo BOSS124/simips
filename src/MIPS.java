@@ -64,6 +64,11 @@ public class MIPS extends Canvas {
 	private boolean modoTroca;
 	private boolean entradaPrograma;
 	private boolean reginfos;
+	private boolean mostrarajuda;
+	private boolean meminfo;
+
+	private static final long clockdelay = 1000;
+	private long lastClock;
 
 	public MIPS() {
 		Dimension dim = new Dimension(1150, 700);
@@ -81,11 +86,15 @@ public class MIPS extends Canvas {
 		modoTroca = false;
 		entradaPrograma = false;
 		reginfos = false;
+		mostrarajuda = false;
+		meminfo = false;
+
+		lastClock = 0;
 
 		caminhos = new ArrayList<CaminhoDados>();
 
 		componentes = new ArrayList<Componente>();
-		for(int i = 0; i < 56; i++)
+		for(int i = 0; i < 60; i++)
 			caminhos.add(new CaminhoDados());
 		/* Adicionando componentes do simulador --------------------------------------*/
 
@@ -193,7 +202,7 @@ public class MIPS extends Canvas {
 		caminhos.get(20).novoPonto(new Point(588, 460));
 		caminhos.get(20).novoPonto(new Point(588, 450));
 
-		regaux19 = new RegAuxiliar(500, 230, "PC+4");
+		regaux19 = new RegAuxiliar(500, 230, "PC+4(2)");
 		caminhos.get(21).novoPonto(new Point(562, 250));
 		caminhos.get(21).novoPonto(new Point(572, 250));
 		caminhos.get(21).novoPonto(new Point(572, 210));
@@ -282,7 +291,7 @@ public class MIPS extends Canvas {
 		caminhos.get(37).novoPonto(new Point(610, 600));
 		caminhos.get(37).novoPonto(new Point(710, 600));
 
-		regaux9 = new RegAuxiliar(710, 90, "Ctrl2");
+		regaux9 = new RegAuxiliar(710, 90, "Ctrl(2)");
 		caminhos.get(38).novoPonto(new Point(772, 110));
 		caminhos.get(38).novoPonto(new Point(930, 110));
 		caminhos.get(38).novoPonto(new Point(930, 125));
@@ -336,7 +345,7 @@ public class MIPS extends Canvas {
 		caminhos.get(49).novoPonto(new Point(918, 380));
 		caminhos.get(49).novoPonto(new Point(950, 380));
 
-		regaux15 = new RegAuxiliar(950, 105, "Ctrl3");
+		regaux15 = new RegAuxiliar(950, 105, "Ctrl(3)");
 		caminhos.get(50).novoPonto(new Point(1012, 125));
 		caminhos.get(50).novoPonto(new Point(1032, 125));
 		caminhos.get(50).novoPonto(new Point(1032, 50));
@@ -422,8 +431,6 @@ public class MIPS extends Canvas {
 		componentes.add(mux4);
 		componentes.add(regaux19);
 
-		
-
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				switch(e.getKeyCode()) {
@@ -440,7 +447,42 @@ public class MIPS extends Canvas {
 						break;
 
 					case KeyEvent.VK_C:
-						clock();
+						if(modoAuto == false) clock();
+						break;
+
+					case KeyEvent.VK_H:
+						mostrarajuda = !mostrarajuda;
+						break;
+
+					case KeyEvent.VK_M:
+						meminfo = !meminfo;
+						break;
+
+					case KeyEvent.VK_S:
+						int end;
+						int valor;
+						String input;
+						input = JOptionPane.showInputDialog("Qual o endereço de memória que deseja alterar? (Decimal)");
+						if(!input.isEmpty()) {
+							end = Integer.parseInt(input);
+							input = JOptionPane.showInputDialog("Qual o valor? (Decimal)");
+							if(!input.isEmpty()) {
+								valor = Integer.parseInt(input);
+								memoria.setMemEndValor(end, valor);
+							}	
+						}
+						break;
+
+					case KeyEvent.VK_A:
+						String reg;
+						reg = JOptionPane.showInputDialog("Digite o nome do registrador: (ex: t0, t1)");
+						if(!reg.isEmpty()) {
+							input = JOptionPane.showInputDialog("Digite o novo valor para o registrador: (Decimal)");
+							if(!input.isEmpty()) {
+								valor = Integer.parseInt(input);
+								bregs.setValorReg(reg, valor);
+							}
+						}
 						break;
 				}
 			}
@@ -482,7 +524,7 @@ public class MIPS extends Canvas {
 		mux2.setSeletor((regaux3.getValor() >> 5) & 1);
 
 		ula.setInputs(regaux4.getValor(), mux2.getSaida());
-		ula.setOperacao(ControleULA.getULAControle(regaux6.getValor(), (regaux3.getValor() >> 6) & 1));
+		ula.setOperacao(ControleULA.getULAControle((regaux6.getValor() & 63), (regaux3.getValor() >> 6) & 3));
 		ula.operate();
 
 		regaux11.setValor(ula.getZeroFlag()); //Zero = ula zero flag
@@ -511,15 +553,12 @@ public class MIPS extends Canvas {
 
 		/* Etapa Instruction Fetch */
 		int index = pc.getValor() / 4;
-		if(index >= InstCache.cont) {
-			index = 0;
-			pc.setValor(0);
-		}
 
 		regaux2.setValor(instCache.traduzir(index)); //Inst
+		pc.setValor(mux1.getSaida()); //pc = pc + 4 || branch
+		if((pc.getValor() / 4) >= InstCache.cont) pc.setValor(0);
 		mux1.setEntrada(0, Somador.getSoma(pc.getValor(), 4));
 		regaux1.setValor(Somador.getSoma(pc.getValor(), 4));
-		pc.setValor(mux1.getSaida()); //pc = pc + 4 || branch
 		/* Fim Instruction Fetch */
 	}
 
@@ -534,6 +573,13 @@ public class MIPS extends Canvas {
 				pi.mostrar();
 			}
 			entradaPrograma = false;
+		}
+
+		if(modoAuto) {
+			if((System.currentTimeMillis() - lastClock) >= clockdelay) {
+				clock();
+				lastClock = System.currentTimeMillis();
+			}
 		}
 	}
 
@@ -576,97 +622,128 @@ public class MIPS extends Canvas {
 
 			grf.drawString("t0", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("t0").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("t0").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("t0").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("t1", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("t1").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("t1").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("t1").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("t2", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("t2").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("t2").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("t2").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("t3", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("t3").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("t3").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("t3").getValor()), 125, y);
 			y += altura + 5;
 			
 			grf.drawString("t4", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("t4").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("t4").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("t4").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("t5", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("t5").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("t5").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("t5").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("t6", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("t6").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("t6").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("t6").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("t7", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("t7").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("t7").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("t7").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("t8", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("t8").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("t8").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("t8").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("t9", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("t9").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("t9").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("t9").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("s0", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("s0").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("s0").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("s0").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("s1", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("s1").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("s1").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("s1").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("s2", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("s2").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("s2").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("s2").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("s3", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("s3").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("s3").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("s3").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("s4", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("s4").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("s4").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("s4").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("s5", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("s5").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("s5").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("s5").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("s6", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("s6").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("s6").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("s6").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("s7", 5, y);
 			grf.drawString(Integer.toString(bregs.getRegistrador("s7").getCodigo()), 55, y);
-			grf.drawString(Integer.toString(bregs.getRegistrador("s7").getValor()), 125, y);
+			grf.drawString(Integer.toHexString(bregs.getRegistrador("s7").getValor()), 125, y);
 			y += altura + 5;
 
 			grf.drawString("PC", 5, y);
 			grf.drawString("?", 55, y);
-			grf.drawString(Integer.toString(pc.getValor()), 125, y);
+			grf.drawString(Integer.toHexString(pc.getValor()), 125, y);
+		}
+
+		if(meminfo) {
+			grf.clearRect(0, 0, getWidth(), getHeight());
+			int y = altura + 5;
+
+			grf.drawString("ENDEREÇO", 5, y);
+
+			grf.drawString("VALOR", 70, y);
+			y += altura + 5;
+
+			for(int i = 0; i < (MemoriaDados.CAPACIDADE - 4); i += 4, y += altura + 5) {
+				grf.drawString(Integer.toHexString(i), 5, y);
+				grf.drawString(Integer.toHexString(memoria.getMemEndValor(i)), 70, y);
+			}
+		}
+
+		if(mostrarajuda) {
+			grf.clearRect(0, 0, getWidth(), getHeight());
+			int y = altura + 5;
+
+			grf.drawString("ATALHOS", 5, y);
+			y += altura + 5;
+
+			grf.drawString("Tecla \'P\': Alterar Instruções do Programa", 5, y);
+			y += altura + 5;
+
+
+
+			grf.drawString("Referência: Computer Organization and Design, 4th Ed, D. A. Patterson and J. L. Hennessy", 5, y);
+
 		}
 
 		grf.dispose();

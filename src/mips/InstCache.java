@@ -70,11 +70,11 @@ public class InstCache extends Componente {
 			rs = banco.getRegistrador(m.group(3)).getCodigo();
 			rt = banco.getRegistrador(m.group(4)).getCodigo();
 
-			inst |= op << 31;
-			inst |= rs << 25;
-			inst |= rt << 20;
-			inst |= rd << 15;
-			inst |= shamt << 10;
+			inst |= op << 26;
+			inst |= rs << 21;
+			inst |= rt << 16;
+			inst |= rd << 11;
+			inst |= shamt << 6;
 			inst |= funct;
 
 			return inst;
@@ -96,9 +96,9 @@ public class InstCache extends Componente {
 			rs = banco.getRegistrador(m.group(2)).getCodigo();
 			imm = Integer.parseInt(m.group(3), 10);
 
-			inst |= op << 31;
-			inst |= rs << 25;
-			inst |= rt << 20;
+			inst |= op << 26;
+			inst |= rs << 21;
+			inst |= rt << 16;
 			inst |= imm;
 
 			return inst;
@@ -113,9 +113,9 @@ public class InstCache extends Componente {
 			rt = banco.getRegistrador(m.group(2)).getCodigo();
 			imm = Integer.parseInt(m.group(3), 10);
 
-			inst |= op << 31;
-			inst |= rs << 25;
-			inst |= rt << 20;
+			inst |= op << 26;
+			inst |= rs << 21;
+			inst |= rt << 16;
 			inst |= imm;
 
 			return inst;
@@ -132,11 +132,11 @@ public class InstCache extends Componente {
 			rt = 0;
 			rd = 0;
 
-			inst |= op << 31;
-			inst |= rs << 25;
-			inst |= rt << 20;
-			inst |= rd << 15;
-			inst |= shamt << 10;
+			inst |= op << 26;
+			inst |= rs << 21;
+			inst |= rt << 16;
+			inst |= rd << 11;
+			inst |= shamt << 6;
 			inst |= funct;
 
 			return inst;
