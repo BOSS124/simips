@@ -70,6 +70,7 @@ public class MIPS extends Canvas {
 	private static final long clockdelay = 1000;
 	private long lastClock;
 
+	/* Construtor inicializa todos os elementos do simulador */
 	public MIPS() {
 		Dimension dim = new Dimension(1150, 700);
 		setMinimumSize(dim);
@@ -82,7 +83,6 @@ public class MIPS extends Canvas {
 		fonteTexto = new Font("SansSerif", Font.BOLD, 10);
 
 		modoAuto = false;
-
 		modoTroca = false;
 		entradaPrograma = false;
 		reginfos = false;
@@ -494,6 +494,7 @@ public class MIPS extends Canvas {
 		});
 	}
 
+	/* Executa toda a lógica envolvida na borda de subida do clock */
 	public void clock() {
 		/* Começa pelo Write Back */
 		mux4.setEntrada(1, regaux16.getValor());
@@ -567,20 +568,21 @@ public class MIPS extends Canvas {
 		/* Fim Instruction Fetch */
 	}
 
+	/* loop atualização */
 	public void tick() {
-		if(modoTroca == true) {
+		if(modoTroca == true) { //troca de modo
 			modoAuto = !modoAuto;
 			modoTroca = false;
 		}
 
-		if(entradaPrograma == true) {
+		if(entradaPrograma == true) { //mostra form com programa
 			if(!pi.isShowing()) {
 				pi.mostrar();
 			}
 			entradaPrograma = false;
 		}
 
-		if(modoAuto) {
+		if(modoAuto) { //se modo automático executa clock uma vez a cada segundo
 			if((System.currentTimeMillis() - lastClock) >= clockdelay) {
 				clock();
 				lastClock = System.currentTimeMillis();
@@ -588,6 +590,7 @@ public class MIPS extends Canvas {
 		}
 	}
 
+	/* Desenha todos os elementos no canvas do simulador */
 	public void render() {
 		BufferStrategy bs = getBufferStrategy();
 		if(bs == null) {

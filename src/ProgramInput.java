@@ -11,6 +11,7 @@ import java.awt.FlowLayout;
 
 import mips.InstCache;
 
+/* Classe que implementa a janela de entrada de programa */
 public class ProgramInput extends JFrame implements ActionListener {
 	private InstCache instCache;
 	private JTextArea textArea;
